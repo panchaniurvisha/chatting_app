@@ -1,15 +1,15 @@
 import 'dart:io';
 
+import 'package:chatting_app/helper/dialogs.dart';
 import 'package:chatting_app/res/constant/app_images.dart';
-import 'package:chatting_app/view/home_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 
 import '../../api/apis.dart';
-import '../../helper/dialogs.dart';
-import '../../main.dart';
+import '../../res/common/media_query.dart';
+import '../home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -87,19 +87,27 @@ class _LoginScreenState extends State<LoginScreen>
                 elevation: 1),
             onPressed: () {
               Dialogs.showProgressBar(context);
-              signInWithGoogle().then((user) {
+              signInWithGoogle().then((user) async {
                 Navigator.pop(context);
                 if (user != null) {
                   debugPrint("\n User:${user.user}");
                   debugPrint("\n User Additional Information:$user");
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeScreen()));
+                  if ((await APIs.userExists())) {
+                    Navigator.pushReplacement(context,
+                        MaterialPageRoute(builder: (context) => HomeScreen()));
+                  } else {
+                    APIs.createUser().then((value) {
+                      Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => HomeScreen()));
+                    });
+                  }
                 }
               });
             },
             icon: Image.asset(AppImages.googleIcon,
-                // height: height(context) * .03
-                height: mq!.height * .03),
+                height: height(context) * .03),
             label: RichText(
               text: TextSpan(
                   style: TextStyle(color: Colors.black, fontSize: 18.sp),

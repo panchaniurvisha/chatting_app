@@ -3,6 +3,7 @@ import 'package:chatting_app/res/common/chat_user_card.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 import '../models/chat_user_model.dart';
 
@@ -71,7 +72,11 @@ class _HomeScreenState extends State<HomeScreen> {
             return SizedBox();
           }),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () async {
+          await APIs.auth.signOut();
+          await GoogleSignIn().signOut();
+          // await Navigator.pushNamedAndRemoveUntil(context, MaterialPageRoute(builder: (context) => LoginScreen()), (route) => false);
+        },
         child: const Icon(Icons.add_comment_rounded),
       ),
     );

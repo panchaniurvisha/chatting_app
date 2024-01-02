@@ -1,11 +1,11 @@
-import 'package:chatting_app/view/home_screen.dart';
+import 'package:chatting_app/view/auth/login_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../api/apis.dart';
 import '../res/constant/app_images.dart';
-import 'auth/login_screen.dart';
+import 'home_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

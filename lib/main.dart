@@ -1,10 +1,9 @@
-import 'package:chatting_app/view/splash_screen.dart';
+import 'package:chatting_app/view/home_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-Size? mq;
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -50,7 +49,7 @@ class MyApp extends StatelessWidget {
             // useMaterial3: true,
           ),
           debugShowCheckedModeBanner: false,
-          home: const SplashScreen(),
+          home: const HomeScreen(),
         );
       },
     );
