@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:chatting_app/models/chat_user_model.dart';
+import 'package:chatting_app/models/message_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -89,14 +90,9 @@ class APIs {
 
   ///Update Profile picture of user
   static Future<void> updateProfilePicture(File file) async {
-    ///getting file extension
     final extension = file.path.split(".").last;
     debugPrint("extension-->$extension");
-
-    ///storahe file ref with path
     final ref = storage.ref().child("profile pictures/${user.uid}.$extension");
-
-    ///uploading image
     await ref
         .putFile(file, SettableMetadata(contentType: "image/$extension"))
         .then((p0) =>
@@ -105,5 +101,42 @@ class APIs {
     await fireStore.collection("users").doc(user.uid).update({
       "image": me.image,
     });
+  }
+
+  ///--------- chat screen related Api---
+  ///
+  ///chats(collection)-->conversition_id(doc)-->messages(collection)-->message(doc)
+  ///useful for getting conversition id
+  static String getConversationId(String id) =>
+
+      ///id ==> means messgae receive kre
+      user.uid.hashCode <= id.hashCode
+          ? "${user.uid}_$id"
+          : "${id}_${user.uid}";
+
+  ///for getting All Users from firestore database
+  static Stream<QuerySnapshot<Map<String, dynamic>>> getAllMessages(
+      ChatUserModel chatUserModel) {
+    return fireStore
+        .collection(
+            "chats/${getConversationId(chatUserModel.id.toString())}/messages")
+        .snapshots();
+  }
+
+  ///For sending Message
+  static Future<void> sendMessage(
+      ChatUserModel chatUserModel, String msg) async {
+    ///message sending time (also used as id)
+    final time = DateTime.now().millisecondsSinceEpoch;
+    MessageModel messageModel = MessageModel(
+        toId: chatUserModel.id,
+        msg: msg,
+        read: "",
+        fromId: user.uid,
+        sent: time.toString(),
+        type: Type.text);
+    final ref = fireStore.collection(
+        "chats/${getConversationId(chatUserModel.id.toString())}/messages");
+    await ref.doc(time.toString()).set(messageModel.toJson());
   }
 }

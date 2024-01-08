@@ -1,18 +1,26 @@
 import 'package:chatting_app/models/chat_user_model.dart';
 import 'package:flutter/material.dart';
 
+import '../../view/chat_screen.dart';
 import 'media_query.dart';
 
 class ChatUserCard extends StatelessWidget {
-  final ChatUserModel? chatUSerModel;
+  final ChatUserModel? chatUserModel;
 
-  const ChatUserCard({super.key, required this.chatUSerModel});
+  const ChatUserCard({super.key, required this.chatUserModel});
 
   @override
   Widget build(BuildContext context) {
     return Card(
       child: InkWell(
-        onTap: () {},
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) => ChatScreen(
+                        chatUserModel: chatUserModel!,
+                      )));
+        },
         child: ListTile(
             // leading: ClipRRect(
             //   borderRadius: BorderRadius.circular(30),
@@ -25,7 +33,7 @@ class ChatUserCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(height(context) / 10),
               child: CircleAvatar(
                 backgroundImage: NetworkImage(
-                  "${chatUSerModel!.image}",
+                  "${chatUserModel!.image}",
                   //   Image.file(
                   //   File(profileImage!),
                   //   // height: 500.h,
@@ -35,9 +43,9 @@ class ChatUserCard extends StatelessWidget {
                 radius: 50,
               ),
             ),
-            title: Text("${chatUSerModel!.name}"),
-            subtitle: Text("${chatUSerModel!.about}"),
-            trailing: CircleAvatar(
+            title: Text("${chatUserModel!.name}"),
+            subtitle: Text("${chatUserModel!.about}"),
+            trailing: const CircleAvatar(
               radius: 10,
               backgroundColor: Colors.lightGreenAccent,
             )),

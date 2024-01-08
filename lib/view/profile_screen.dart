@@ -87,7 +87,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 width: height(context) * .1,
                                 height: height(context) * .1,
                                 errorBuilder: (context, error, stackTrace) =>
-                                    const Icon(CupertinoIcons.profile_circled)),
+                                    Icon(
+                                      CupertinoIcons.profile_circled,
+                                      size: 80.h,
+                                    )),
                           ),
                     Positioned(
                       left: 25.w,

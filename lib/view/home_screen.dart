@@ -118,7 +118,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             itemCount:
                                 isSearching ? searchList.length : list.length,
                             itemBuilder: (context, index) => ChatUserCard(
-                                chatUSerModel: isSearching
+                                chatUserModel: isSearching
                                     ? searchList[index]
                                     : list[index])
                             //  Text("Name:${list[index]}"),
